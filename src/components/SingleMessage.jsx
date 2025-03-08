@@ -6,7 +6,6 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 
 const SingleMessage = ({ sender, message }) => {
-  const { loading } = useContext(AppContext);
   return (
     <Box
       sx={{
@@ -20,13 +19,9 @@ const SingleMessage = ({ sender, message }) => {
         alignSelf: sender === "user" ? "flex-end" : "flex-start",
       }}
     >
-      {loading ? (
-        <CircularProgress />
-      ) : (
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
           {message}
         </ReactMarkdown>
-      )}
     </Box>
   );
 };

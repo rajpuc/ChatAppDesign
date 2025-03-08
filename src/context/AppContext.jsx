@@ -8,7 +8,7 @@ export const AppContext = createContext();
 export const AppContextProvider = ({children}) =>{
     const [historyTitles,setHistoryTitles]=useState([]);
     const [historyContents,setHistoryContents]=useState({});
-    const [loading, setLoading] = useState(false);
+
 
     const navigate = useNavigate();
     const value = {
@@ -23,8 +23,6 @@ export const AppContextProvider = ({children}) =>{
         setHistoryTitles,
         historyContents,
         setHistoryContents,
-        loading,
-        setLoading
     }
     return(
         <AppContext.Provider value={value}>

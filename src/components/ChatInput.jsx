@@ -1,5 +1,5 @@
 import { BorderColor, Send as SendIcon } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/material";
+import { Box, CircularProgress, IconButton } from "@mui/material";
 import React, { useState, useRef, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
@@ -8,9 +8,9 @@ import { useParams } from "react-router-dom";
 const ChatInput = () => {
   const params = useParams();
   const specificKey = params.chatId;
-
+  const [loading, setLoading] = useState(false);
   const [textInput, setTextInput] = useState("");
-  const { colors, setHistoryContents, setLoading } = useContext(AppContext);
+  const { colors, setHistoryContents} = useContext(AppContext);
 
 
   const addNewMessage = (message,sender,specificKey) => {
@@ -26,11 +26,10 @@ const ChatInput = () => {
     }));
   }
 
-  const sendQueryHandler = async () => {
-    addNewMessage(textInput,"user",specificKey);
+  const sendApiRequest = async () =>{
     
-    setLoading(true);
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://api.echogpt.live/v1/chat/completions",
         {
@@ -44,13 +43,18 @@ const ChatInput = () => {
           },
         }
       );
-  
+      setLoading(false);
       addNewMessage(response.data.choices[0].message.content,"system",specificKey);
       setTextInput("");
     } catch (error) {
-      console.error("Error occurred while sending query:", error);
+      console.log("Error occurred while sending query:", error.message);
     }
-    setLoading(false);
+
+  }
+
+  const sendQueryHandler = () => {
+    addNewMessage(textInput,"user",specificKey);
+    sendApiRequest();
   };
   
   return (
@@ -60,6 +64,7 @@ const ChatInput = () => {
         display: "flex",
         alignItems: "flex-start",
         gap: "0.5rem",
+        position:"relative"
       }}
     >
       <textarea
@@ -70,7 +75,7 @@ const ChatInput = () => {
           height: "100%",
           overflowX: "hidden",
           overflowY: "auto",
-          padding: "8px",
+          padding: "8px 50px 8px 8px",
           outline: "none",
           border: "2px solid",
           borderColor: colors.customPrimaryColor,
@@ -97,6 +102,17 @@ const ChatInput = () => {
       >
         <SendIcon className="sendBtn" />
       </IconButton>
+      {
+        loading?      <Box sx={{
+          position:"absolute",
+          right:"4rem",
+          top:"50%",
+          transform:"translateY(-50%)"
+  
+        }}>
+          <CircularProgress size={"2rem"} color={"success"}/>
+        </Box>:''
+      }
     </Box>
   );
 };

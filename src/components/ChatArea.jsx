@@ -7,7 +7,7 @@ import ChatInput from "./ChatInput";
 const ChatArea = () => {
   const pararms = useParams();
   const chatId = pararms.chatId;
-  console.log(chatId);
+
   return (
     <Stack
       sx={{

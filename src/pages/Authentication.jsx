@@ -15,7 +15,7 @@ import { Password, Reviews as ReviewsIcon } from "@mui/icons-material";
 const Authentication = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [errors, setErrors] = useState({});
-  const { colors,navigate } = useContext(AppContext);
+  const { colors,navigate,setHistoryTitles,historyTitles } = useContext(AppContext);
 
   const toggleHandler = () => {
     setIsLogin((prev) => !prev);
@@ -53,7 +53,16 @@ const Authentication = () => {
 
   const handleLoginFormSubmit = (e) => {
     e.preventDefault();
-    navigate('/chat')
+
+    setHistoryTitles((prev) => [
+      {
+        chatTitle: `chat title ${prev.length + 1}`,
+        to: `/chat/${prev.length + 1}`,
+      },
+      ...prev, // Add new chat at the beginning
+    ]);
+    
+    navigate(`chat/${historyTitles.length+1}`);
   };
 
   const handleLoginInputChange = (e) => {

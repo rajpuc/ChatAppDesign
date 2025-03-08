@@ -16,10 +16,9 @@ import {
 import React, { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 
-const Header = () => {
+const Header = ({menuHandler,logoutHandler}) => {
   const { colors } = useContext(AppContext);
 
-  const logoutHandler = () => {};
 
   return (
     <>
@@ -70,6 +69,7 @@ const Header = () => {
                     },
                   },
                 }}
+                onClick={menuHandler}
               >
                 <MenuIcon
                   className="smmenu"

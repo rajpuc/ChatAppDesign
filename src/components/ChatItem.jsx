@@ -1,21 +1,25 @@
 import { Typography } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { memo, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
-const ChatItem = ({ to, chatTitle }) => {
+const ChatItem = ({ to, chatTitle, chatId, index,length }) => {
   const { colors } = useContext(AppContext);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Check if the chat is selected
+  const isSelected = index == Number(length)-Number(chatId) ;
+
   return (
     <Link
       to={to}
       style={{
-        background: isHovered
+        background: isHovered || isSelected
           ? "#fff"
           : "linear-gradient(to right, #3B8D59, #006400)",
         padding: "0.6rem 1rem",
         textDecoration: "none",
-        color: isHovered ? colors.customPrimaryColor : "#fff",
+        color: isHovered || isSelected ? colors.customPrimaryColor : "#fff",
         fontWeight: "bold",
         border: "2px solid rgba(255, 255, 255, 0.8)",
         boxShadow: isHovered
@@ -39,4 +43,5 @@ const ChatItem = ({ to, chatTitle }) => {
   );
 };
 
-export default ChatItem;
+export default memo(ChatItem);
+
